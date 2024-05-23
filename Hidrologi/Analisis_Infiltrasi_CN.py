@@ -108,6 +108,52 @@ def calculate_limpasan(P, ARF, CN, Im):
     st.pyplot(fig)
     plt.close()
     
+    from bokeh.plotting import figure, show
+    from bokeh.models import Legend
+
+    # Creating Bokeh figure
+    fig = figure(width=800, height=400, title="Grafik Hujan Jam-Jaman Kumulatif")
+
+    # Plotting bars on the first plot
+    bar1 = fig.vbar(x=absis, top=Pkum, width=0.4, color="blue", legend_label="Hujan Rencana (ARF) [mm]")
+    bar2 = fig.vbar(x=absis, top=reff_kum, width=0.4, color="orange", legend_label="Hujan efektif [mm]")
+    bar3 = fig.vbar(x=absis, top=infill_kum, width=0.4, color="green", legend_label="Infiltrasi [mm]")
+
+    # Adding text annotations
+    for i in range(len(reff_kum)):
+        fig.text(x=absis[i], y=reff_kum[i], text=[str(round(reff_kum[i], 2))], text_align='center', text_baseline='bottom')
+        fig.text(x=absis[i], y=infill_kum[i], text=[str(round(infill_kum[i], 2))], text_align='center', text_baseline='bottom')
+
+    # Set axis labels and title
+    fig.xaxis.axis_label = 'Absis'
+    fig.yaxis.axis_label = 'Nilai'
+    fig.title.text = 'Grafik Hujan Jam-Jaman Kumulatif'
+
+    # Plotting bars on the second plot
+    fig2 = figure(width=800, height=400, title="Grafik Hujan Jam-Jaman untuk P = {} mm/hari".format(np.sum(P) / ARF))
+    bar4 = fig2.vbar(x=absis, top=P, width=0.4, color="blue", legend_label="Hujan Rencana (ARF) [mm]")
+    bar5 = fig2.vbar(x=absis, top=reff, width=0.4, color="orange", legend_label="Hujan efektif [mm]")
+    bar6 = fig2.vbar(x=absis, top=infill, width=0.4, color="green", legend_label="Infiltrasi [mm]")
+
+    # Adding text annotations
+    for i in range(len(reff)):
+        fig2.text(x=absis[i], y=reff[i], text=[str(round(reff[i], 2))], text_align='center', text_baseline='bottom')
+        fig2.text(x=absis[i], y=infill[i], text=[str(round(infill[i], 2))], text_align='center', text_baseline='bottom')
+
+    # Set axis labels and title
+    fig2.xaxis.axis_label = 'Absis'
+    fig2.yaxis.axis_label = 'Nilai'
+    fig2.title.text = 'Grafik Hujan Jam-Jaman untuk P = {} mm/hari'.format(np.sum(P) / ARF)
+
+    # Adding legends
+    fig.legend.location = "top_left"
+    fig.legend.click_policy = "hide"
+    fig2.legend.location = "top_left"
+    fig2.legend.click_policy = "hide"
+
+    st.bokeh_chart(fig)
+    st.bokeh_chart(fig2)
+    
     # Tampilkan tabel reffkumtab
     st.subheader("Tabel Hujan Efektif Kumulatif")
     st.write(dfreffkum)
