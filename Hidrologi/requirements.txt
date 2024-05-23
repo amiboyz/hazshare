@@ -1,5 +1,0 @@
-nump
-pandas
-streamlit
-bokeh.plotting
-bokeh.models
