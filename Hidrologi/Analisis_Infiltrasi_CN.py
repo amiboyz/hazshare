@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import streamlit as st
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 # Fungsi untuk menghitung limpasan berdasarkan metode CN
 def calculate_limpasan(P, ARF, CN, Im):
@@ -83,30 +83,30 @@ def calculate_limpasan(P, ARF, CN, Im):
     dfreffkum = pd.DataFrame(reffkumtab)
 
     # Plotting
-    fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(10, 4))
-    axes[0].bar(absis, Pkum, label="Hujan Rencana (ARF) [mm]")
-    axes[0].bar(absis, reff_kum, label="Hujan efektif [mm]")
-    axes[0].bar(absis, infill_kum, label="Infiltrasi [mm]")
-    axes[0].set_title('Grafik Hujan Jam-Jaman Kumulatif P = {} mm/hari'.format(np.sum(P) / ARF))
-    for i in range(len(reff_kum)):
-        axes[0].text(absis[i], reff_kum[i], str(round(reff_kum[i], 2)), ha='center', va='bottom')
-        axes[0].text(absis[i], infill_kum[i], str(round(infill_kum[i], 2)), ha='center', va='bottom')
-    axes[0].legend();
+    #fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(10, 4))
+    #axes[0].bar(absis, Pkum, label="Hujan Rencana (ARF) [mm]")
+    #axes[0].bar(absis, reff_kum, label="Hujan efektif [mm]")
+    #axes[0].bar(absis, infill_kum, label="Infiltrasi [mm]")
+    #axes[0].set_title('Grafik Hujan Jam-Jaman Kumulatif P = {} mm/hari'.format(np.sum(P) / ARF))
+    #for i in range(len(reff_kum)):
+    #    axes[0].text(absis[i], reff_kum[i], str(round(reff_kum[i], 2)), ha='center', va='bottom')
+    #    axes[0].text(absis[i], infill_kum[i], str(round(infill_kum[i], 2)), ha='center', va='bottom')
+    #axes[0].legend();
 
-    P = np.diff(Pkum, prepend=0)
-    reff = np.diff(reff_kum, prepend=0)
-    infill = np.diff(infill_kum, prepend=0)
-    axes[1].bar(absis, P, label="Hujan Rencana (ARF) [mm]")
-    axes[1].bar(absis, reff, label="Hujan efektif [mm]")
-    axes[1].bar(absis, infill, label="Infiltrasi [mm]")
-    axes[1].set_title('Grafik Hujan Jam-Jaman untuk P = {} mm/hari'.format(np.sum(P) / ARF))
-    for i in range(len(reff)):
-        axes[1].text(absis[i], reff[i], str(round(reff[i], 2)), ha='center', va='bottom')
-        axes[1].text(absis[i], infill[i], str(round(infill[i], 2)), ha='center', va='bottom')
-    axes[1].legend();
-    plt.tight_layout()
-    st.pyplot(fig)
-    plt.close()
+    #P = np.diff(Pkum, prepend=0)
+    #reff = np.diff(reff_kum, prepend=0)
+    #infill = np.diff(infill_kum, prepend=0)
+    #axes[1].bar(absis, P, label="Hujan Rencana (ARF) [mm]")
+    #axes[1].bar(absis, reff, label="Hujan efektif [mm]")
+    #axes[1].bar(absis, infill, label="Infiltrasi [mm]")
+    #axes[1].set_title('Grafik Hujan Jam-Jaman untuk P = {} mm/hari'.format(np.sum(P) / ARF))
+    #for i in range(len(reff)):
+    #    axes[1].text(absis[i], reff[i], str(round(reff[i], 2)), ha='center', va='bottom')
+    #    axes[1].text(absis[i], infill[i], str(round(infill[i], 2)), ha='center', va='bottom')
+    #axes[1].legend();
+    #plt.tight_layout()
+    #st.pyplot(fig)
+    #plt.close()
     
     # Tampilkan tabel reffkumtab
     st.subheader("Tabel Hujan Efektif Kumulatif")
