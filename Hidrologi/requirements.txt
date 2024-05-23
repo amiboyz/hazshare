@@ -1,5 +1,4 @@
-nump
-pandas
-streamlit
-bokeh.plotting
-bokeh.models
+bokeh==2.4.3
+numpy==1.26.4
+pandas==2.2.2
+streamlit==1.34.0
