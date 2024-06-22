@@ -53,8 +53,8 @@ def calculate_limpasan(P, ARF, CN, Im):
     reff, infil, Iab = (limpCN(CN, P))  # Memanggil fungsi limpasan CN
     Iab = np.array(Iab)
     Iab = Iab * 25.4
-    reff_kum = (np.cumsum(reff, 2))
-    infill_kum = (Pkum - reff_kum)
+    reff_kum = np.cumsum(reff)
+    infill_kum = Pkum - reff_kum
 
     P = np.diff(Pkum, prepend=0)
     infill = np.diff(infill_kum, prepend=0) * ((100 - Im) / 100)
