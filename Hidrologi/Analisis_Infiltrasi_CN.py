@@ -57,7 +57,7 @@ def calculate_limpasan(P, ARF, CN, Im):
     infill_kum = (Pkum - reff_kum) * ((100 - Im) / 100)
 
     P = np.diff(Pkum, prepend=0)
-    infill = np.diff(infill_kum, prepend=0) * ((100 - Im) / 100)
+    infill = np.diff(infill_kum, prepend=0)
     reff = P - infill
 
     # Menyimpan hasil perhitungan dalam DataFrame
