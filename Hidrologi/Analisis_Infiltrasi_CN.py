@@ -20,7 +20,8 @@ def calculate_limpasan(P, ARF, CN, Im):
 
     def limpCN(CN, P):  # membuat fungsi dengan nilai CN dan Hujan
         '''P dalam mm, limp dalam mm'''
-        S = 1000 / CN - 10  # persamaan hubungan storage dengan nilai CN
+        CN_adj = CN+(100-CN)*(Im/100)
+        S = 1000 / CN_adj - 10  # persamaan hubungan storage dengan nilai CN
         k = 0.2  # where K is varied between 0-0.26 (springer et al.), K=0.2 is recommended by SCS
         Pkum = []  # membuat array hujan kumulatif
         Ptot = 0  # mendefinisikan hujan total =0
@@ -40,33 +41,34 @@ def calculate_limpasan(P, ARF, CN, Im):
             else:
                 Ia = Pkum[i]  # jika hujan kumulatif < atau = Ia maka berikan nilai Ia adalah hujan kumulatif pada jam tersebut
                 Iab.append(Ia)
-            Fa = S * (Pkum[i] - Ia) / (Pkum[i] - Ia + S)  # continuing abstraction (Fa) = storage x (hujan kumulatif - initial abstraction) / (hujan kumulatif - initial abstraction + storage)
+            Fa = (S * (Pkum[i] - Ia) / (Pkum[i] - Ia + S)) # continuing abstraction (Fa) = storage x (hujan kumulatif - initial abstraction) / (hujan kumulatif - initial abstraction + storage)
             infil.append(Fa - Faseb)  # memasukan nilai infiltrasi yaitu continuing abstraction (Fa) - continuing abstraction sebelumnya (Fa)
             Faseb = Fa  # update nilai continuing abstraction (Fa) sebelumnya
             reffkum = Pkum[i] - Ia - Fa  # hujan efektif kumulatif = Hujan kumulatif - Ia -Fa
             reff.append(reffkum - reffkumseb)  # memasukan nilai hujan efektif = hujan efektif kumulatif - hujan efektif kumulatif sebelumnya
             reffkumseb = reffkum  # update nilai hujan kumulatif
         infil = np.array(infil) * 25.4  # membuat array infiltrasi dan mnejadikan dari inch ke mm
-        reff = np.array(reff) * 25.4  # membuat array hujan  dan mnejadikan dari inch ke mm
+        reff = np.array(reff) * 25.4  # membuat array hujan dan menjadikan dari inch ke mm
+        Iab = np.array(Iab) * 25.4 # membuat array intial abstraction dan menjadikan dari inch ke mm
         return (reff, infil, Iab)  # Menyimpan fungsi hujan efektif dan infiltrasi
 
     reff, infil, Iab = (limpCN(CN, P))  # Memanggil fungsi limpasan CN
-    Iab = np.array(Iab)
-    Iab = Iab * 25.4
-    reff_kum = np.cumsum(reff)
-    infill_kum = (Pkum - reff_kum) * ((100 - Im) / 100)
 
-    P = np.diff(Pkum, prepend=0)
-    infill = np.diff(infill_kum, prepend=0)
-    reff = P - infill
+    #Hujan Efektif Jam-jaman 
+    
+    infiltrasi_jam = (infil + Iab)
+    reff_jam = reff
 
+    infiltrasi_kum = np.cumsum(infiltrasi_jam)  
+    reff_kum = np.cumsum(reff_jam)
+    
     # Menyimpan hasil perhitungan dalam DataFrame
     refftab = {
         'Jam ke-': absis,
         'Hujan Rencana ': Pjam,
-        'Hujan Rencana (ARF)': P,
-        'Infiltrasi': infill,
-        'Hujan Efektif': reff,
+        'Hujan Rencana (ARF)': Pjam_ARF,
+        'Infiltrasi': infiltrasi_jam,
+        'Hujan Efektif': reff_jam,
         #'Nilai CN': CN,
         #'Nilai Impervious (%)': Im,
     }
@@ -76,9 +78,9 @@ def calculate_limpasan(P, ARF, CN, Im):
         'Jam ke-': absis,
         'Hujan Rencana ': Pjam_cum,
         'Hujan Rencana (ARF)': Pkum,
-        'Infiltrasi': infill_kum,
+        'Infiltrasi': infiltrasi_kum,
         'Hujan Efektif': reff_kum,
-        #'Nilai CN': CN,
+        #'Nilai CN': CN,s
         #'Nilai Impervious (%)': Im,
     }
     dfreffkum = pd.DataFrame(reffkumtab)  
