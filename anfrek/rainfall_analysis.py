@@ -4,12 +4,12 @@ import numpy as np
 import scipy.stats as stats
 from bokeh.plotting import figure
 from bokeh.models import Span, Label, HoverTool
-from bokeh.io import output_notebook
+#from bokeh.io import output_notebook
 from scipy.stats import norm, lognorm, pearson3, gumbel_r, kstest, genextreme
 
 
 # Initialize Bokeh output in notebook
-output_notebook()
+#output_notebook()
 
 # Title
 st.title("Rainfall Analysis and Design Storm Calculator")
