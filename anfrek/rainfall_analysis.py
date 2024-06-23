@@ -1,11 +1,11 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import scipy as stats
+import scipy.stats as stats
 from bokeh.plotting import figure
 from bokeh.models import Span, Label, HoverTool
 from bokeh.io import output_notebook
-from scipy import norm, lognorm, pearson3, gumbel_r, kstest, genextreme
+from scipy.stats import norm, lognorm, pearson3, gumbel_r, kstest, genextreme
 
 
 # Initialize Bokeh output in notebook
