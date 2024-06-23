@@ -66,7 +66,7 @@ if st.button('Calculate'):
     t = np.arange(1, tjam, 1)
 
     # Create Bokeh plot for IDF curve
-    p = figure(width=600, height=400,title="Intensity Duration Frequency Curve", x_axis_label='Durasi Hujan (jam)', y_axis_label='Intensitas Hujan (mm/jam)', width=800, height=600)
+    p = figure(title="Intensity Duration Frequency Curve", x_axis_label='Durasi Hujan (jam)', y_axis_label='Intensitas Hujan (mm/jam)', width=600, height=400)
 
     # Add lines for each return period
     for i in range(len(tr)):
@@ -122,7 +122,7 @@ if st.button('Calculate'):
     lower_outlier_threshold = mean_R - critical_value * std_R
 
     # Create a Bokeh plot for Grubbs' test
-    p = figure(width=600, height=400,title='Grafik Data dengan Deteksi Outliers menggunakan Grubbs Test', x_axis_label='Tahun', y_axis_label='Curah Hujan (mm/hari)', plot_width=800, plot_height=400)
+    p = figure(title='Grafik Data dengan Deteksi Outliers menggunakan Grubbs Test', x_axis_label='Tahun', y_axis_label='Curah Hujan (mm/hari)', plot_width=600, plot_height=400)
     p.line(tahun_array, R, line_width=2, legend_label='Data')
     p.circle(tahun_array, R, size=8, legend_label='Data')
 
@@ -198,7 +198,7 @@ if st.button('Calculate'):
 
     # Plotting with Bokeh
     prb = 1 / np.array(tr)
-    p = figure(width=600, height=400,title="Return Period Analysis", x_axis_label='Probability', y_axis_label='Curah Hujan (mm)', plot_width=800, plot_height=600)
+    p = figure(title="Return Period Analysis", x_axis_label='Probability', y_axis_label='Curah Hujan (mm)', plot_width=600, plot_height=400)
 
     # Plot lines for each distribution
     colors = ['blue', 'green', 'red', 'orange', 'purple']
@@ -269,7 +269,7 @@ if st.button('Calculate'):
     st.write(ks_results)
 
     # Bokeh Plotting
-    p = figure(width=600, height=400,title="Return Period Analysis", x_axis_label='Probability', y_axis_label='Curah Hujan (mm)', plot_width=800, plot_height=600)
+    p = figure(title="Return Period Analysis", x_axis_label='Probability', y_axis_label='Curah Hujan (mm)', plot_width=600, plot_height=400)
 
     # Plot lines for each distribution
     colors = ['blue', 'green', 'red', 'orange', 'purple', 'brown']
