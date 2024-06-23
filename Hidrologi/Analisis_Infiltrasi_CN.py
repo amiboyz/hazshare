@@ -20,7 +20,8 @@ def calculate_limpasan(P, ARF, CN, Im):
 
     def limpCN(CN, P):  # membuat fungsi dengan nilai CN dan Hujan
         '''P dalam mm, limp dalam mm'''
-        S = 1000 / CN - 10  # persamaan hubungan storage dengan nilai CN
+        CN_adj = CN+(100-CN)*(Im/100)
+        S = 1000 / CN_adj - 10  # persamaan hubungan storage dengan nilai CN
         k = 0.2  # where K is varied between 0-0.26 (springer et al.), K=0.2 is recommended by SCS
         Pkum = []  # membuat array hujan kumulatif
         Ptot = 0  # mendefinisikan hujan total =0
@@ -40,33 +41,34 @@ def calculate_limpasan(P, ARF, CN, Im):
             else:
                 Ia = Pkum[i]  # jika hujan kumulatif < atau = Ia maka berikan nilai Ia adalah hujan kumulatif pada jam tersebut
                 Iab.append(Ia)
-            Fa = S * (Pkum[i] - Ia) / (Pkum[i] - Ia + S)  # continuing abstraction (Fa) = storage x (hujan kumulatif - initial abstraction) / (hujan kumulatif - initial abstraction + storage)
+            Fa = (S * (Pkum[i] - Ia) / (Pkum[i] - Ia + S)) # continuing abstraction (Fa) = storage x (hujan kumulatif - initial abstraction) / (hujan kumulatif - initial abstraction + storage)
             infil.append(Fa - Faseb)  # memasukan nilai infiltrasi yaitu continuing abstraction (Fa) - continuing abstraction sebelumnya (Fa)
             Faseb = Fa  # update nilai continuing abstraction (Fa) sebelumnya
             reffkum = Pkum[i] - Ia - Fa  # hujan efektif kumulatif = Hujan kumulatif - Ia -Fa
             reff.append(reffkum - reffkumseb)  # memasukan nilai hujan efektif = hujan efektif kumulatif - hujan efektif kumulatif sebelumnya
             reffkumseb = reffkum  # update nilai hujan kumulatif
         infil = np.array(infil) * 25.4  # membuat array infiltrasi dan mnejadikan dari inch ke mm
-        reff = np.array(reff) * 25.4  # membuat array hujan  dan mnejadikan dari inch ke mm
+        reff = np.array(reff) * 25.4  # membuat array hujan dan menjadikan dari inch ke mm
+        Iab = np.array(Iab) * 25.4 # membuat array intial abstraction dan menjadikan dari inch ke mm
         return (reff, infil, Iab)  # Menyimpan fungsi hujan efektif dan infiltrasi
 
     reff, infil, Iab = (limpCN(CN, P))  # Memanggil fungsi limpasan CN
-    Iab = np.array(Iab)
-    Iab = Iab * 25.4
-    reff_kum = (np.cumsum(np.round(reff, 2)))
-    infill_kum = np.round((Pkum - reff_kum), 2)
 
-    P = np.diff(Pkum, prepend=0)
-    infill = np.diff(infill_kum, prepend=0) * ((100 - Im) / 100)
-    reff = P - infill
+    #Hujan Efektif Jam-jaman 
+    
+    infiltrasi_jam = (infil + Iab)
+    reff_jam = reff
 
+    infiltrasi_kum = np.cumsum(infiltrasi_jam)  
+    reff_kum = np.cumsum(reff_jam)
+    
     # Menyimpan hasil perhitungan dalam DataFrame
     refftab = {
         'Jam ke-': absis,
         'Hujan Rencana ': Pjam,
-        'Hujan Rencana (ARF)': P,
-        'Infiltrasi': infill,
-        'Hujan Efektif': reff,
+        'Hujan Rencana (ARF)': Pjam_ARF,
+        'Infiltrasi': infiltrasi_jam,
+        'Hujan Efektif': reff_jam,
         #'Nilai CN': CN,
         #'Nilai Impervious (%)': Im,
     }
@@ -76,9 +78,9 @@ def calculate_limpasan(P, ARF, CN, Im):
         'Jam ke-': absis,
         'Hujan Rencana ': Pjam_cum,
         'Hujan Rencana (ARF)': Pkum,
-        'Infiltrasi': infill_kum,
+        'Infiltrasi': infiltrasi_kum,
         'Hujan Efektif': reff_kum,
-        #'Nilai CN': CN,
+        #'Nilai CN': CN,s
         #'Nilai Impervious (%)': Im,
     }
     dfreffkum = pd.DataFrame(reffkumtab)  
@@ -89,12 +91,12 @@ def calculate_limpasan(P, ARF, CN, Im):
     # Plotting bars on the first plot
     bar1 = fig.vbar(x=absis, top=Pkum, width=0.4, color="powderblue", legend_label="Hujan Rencana (ARF) [mm]")
     bar2 = fig.vbar(x=absis, top=reff_kum, width=0.4, color="orange", legend_label="Hujan efektif [mm]")
-    bar3 = fig.vbar(x=absis, top=infill_kum, width=0.4, color="greenyellow", legend_label="Infiltrasi [mm]")
+    bar3 = fig.vbar(x=absis, top=infiltrasi_kum, width=0.4, color="greenyellow", legend_label="Infiltrasi [mm]")
 
     # Adding text annotations
     for i in range(len(reff_kum)):
         fig.text(x=absis[i], y=reff_kum[i], text=[str(round(reff_kum[i], 1))], text_align='center', text_baseline='bottom')
-        fig.text(x=absis[i], y=infill_kum[i], text=[str(round(infill_kum[i], 1))], text_align='center', text_baseline='bottom')
+        fig.text(x=absis[i], y=infiltrasi_kum[i], text=[str(round(infiltrasi_kum[i], 1))], text_align='center', text_baseline='bottom')
 
     # Set axis labels and title
     fig.xaxis.axis_label = 'Absis'
@@ -107,12 +109,12 @@ def calculate_limpasan(P, ARF, CN, Im):
     fig2 = figure(width=600, height=400, title="Grafik Hujan Jam-Jaman dengan P = {} mm/hari".format(np.round(np.sum(P) / ARF,3)))
     bar4 = fig2.vbar(x=absis, top=P, width=0.4, color="powderblue", legend_label="Hujan Rencana (ARF) [mm]")
     bar5 = fig2.vbar(x=absis, top=reff, width=0.4, color="orange", legend_label="Hujan efektif [mm]")
-    bar6 = fig2.vbar(x=absis, top=infill, width=0.4, color="greenyellow", legend_label="Infiltrasi [mm]")
+    bar6 = fig2.vbar(x=absis, top=infiltrasi_jam, width=0.4, color="greenyellow", legend_label="Infiltrasi [mm]")
 
     # Adding text annotations
     for i in range(len(reff)):
         fig2.text(x=absis[i], y=reff[i], text=[str(round(reff[i], 1))], text_align='center', text_baseline='bottom')
-        fig2.text(x=absis[i], y=infill[i], text=[str(round(infill[i], 1))], text_align='center', text_baseline='bottom')
+        fig2.text(x=absis[i], y=infiltrasi_jam[i], text=[str(round(infiltrasi_jam[i], 1))], text_align='center', text_baseline='bottom')
 
     # Set axis labels and title
     fig2.xaxis.axis_label = 'Absis'
