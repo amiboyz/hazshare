@@ -12,7 +12,8 @@ from scipy.stats import norm, lognorm, pearson3, gumbel_r, kstest, genextreme
 #output_notebook()
 
 # Title
-st.title("Rainfall Analysis and Design Storm Calculator")
+st.title("Analisa Frekuensi Calculator")
+st.caption('created by :blue[HAZ] :sunglasses: miftahhazmi@gmail.com')
 
 # Input for Rainfall Data (R)
 R_input = st.text_area("Enter rainfall data (mm/day), separated by commas", 
