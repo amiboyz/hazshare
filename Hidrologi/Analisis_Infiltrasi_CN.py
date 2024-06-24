@@ -58,7 +58,12 @@ def calculate_limpasan(P, ARF, CN, Im):
     
     #infiltrasi_jam = infil
     reff_jam = reff
-    infiltrasi_jam = [Pjam_ARF[i] if infil[i] == 0 else infil[i] for i in range(len(infil))]
+    for i in range(len(infil)):
+        if Iab[i]!=0:
+            infiltrasi_jam = [Pjam_ARF[i] if infil[i] == 0 else infil[i] for i in range(len(infil))]
+        else:
+            infiltrasi_jam = infil
+    #infiltrasi_jam = [Pjam_ARF[i] if infil[i] == 0 Iab[i]!=0 else infil[i] for i in range(len(infil))]
     #Iab_jam = np.diff(Iab)
 
     infiltrasi_kum = np.cumsum(infiltrasi_jam)  
@@ -98,10 +103,10 @@ def calculate_limpasan(P, ARF, CN, Im):
     fig.vbar(x=absis, top=infiltrasi_kum, width=0.2, color="greenyellow", legend_label="Infiltrasi [mm]")  # Slightly shift bars to the right
 
     # Adding text annotations
-    for i in range(len(reff_kum)):
-        fig.text(x=absis[i] - 0.25, y=Pkum[i], text=[str(round(Pkum[i], 1))], text_align='center', text_baseline='bottom',text_font_size="8pt")
-        fig.text(x=absis[i] + 0.25, y=reff_kum[i], text=[str(round(reff_kum[i], 1))], text_align='center', text_baseline='bottom',text_font_size="8pt")
-        fig.text(x=absis[i], y=infiltrasi_kum[i], text=[str(round(infiltrasi_kum[i], 1))], text_align='center', text_baseline='bottom',text_font_size="8pt")
+    #for i in range(len(reff_kum)):
+    #    fig.text(x=absis[i] - 0.25, y=Pkum[i], text=[str(round(Pkum[i], 1))], text_align='center', text_baseline='bottom',text_font_size="8pt")
+    #    fig.text(x=absis[i] + 0.25, y=reff_kum[i], text=[str(round(reff_kum[i], 1))], text_align='center', text_baseline='bottom',text_font_size="8pt")
+    #    fig.text(x=absis[i], y=infiltrasi_kum[i], text=[str(round(infiltrasi_kum[i], 1))], text_align='center', text_baseline='bottom',text_font_size="8pt")
 
     # Set axis labels and title
     fig.xaxis.axis_label = 'Jam Ke-'
@@ -114,10 +119,10 @@ def calculate_limpasan(P, ARF, CN, Im):
     fig2.vbar(x=absis, top=infiltrasi_jam, width=0.2, color="greenyellow", legend_label="Infiltrasi [mm]")  # Slightly shift bars to the right
 
     # Adding text annotations
-    for i in range(len(reff_kum)):
-        fig2.text(x=absis[i] - 0.25, y=P[i], text=[str(round(Pkum[i], 1))], text_align='center', text_baseline='bottom',text_font_size="8pt")
-        fig2.text(x=absis[i] + 0.25, y=reff[i], text=[str(round(reff[i], 1))], text_align='center', text_baseline='bottom',text_font_size="8pt")
-        fig2.text(x=absis[i], y=infiltrasi_jam[i], text=[str(round(infiltrasi_jam[i], 1))], text_align='center', text_baseline='bottom',text_font_size="8pt")
+    #for i in range(len(reff_kum)):
+    #    fig2.text(x=absis[i] - 0.25, y=P[i], text=[str(round(Pkum[i], 1))], text_align='center', text_baseline='bottom',text_font_size="8pt")
+    #    fig2.text(x=absis[i] + 0.25, y=reff[i], text=[str(round(reff[i], 1))], text_align='center', text_baseline='bottom',text_font_size="8pt")
+    #    fig2.text(x=absis[i], y=infiltrasi_jam[i], text=[str(round(infiltrasi_jam[i], 1))], text_align='center', text_baseline='bottom',text_font_size="8pt")
 
     # Set axis labels and title
     fig2.xaxis.axis_label = 'Jam ke-'
