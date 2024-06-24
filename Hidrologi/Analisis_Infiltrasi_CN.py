@@ -56,8 +56,10 @@ def calculate_limpasan(P, ARF, CN, Im):
 
     #Hujan Efektif Jam-jaman 
     
-    infiltrasi_jam = (infil + Iab)
+    #infiltrasi_jam = infil
     reff_jam = reff
+    infiltrasi_jam = [Pjam_ARF[i] if infil[i] == 0 else infil[i] for i in range(len(infil))]
+    #Iab_jam = np.diff(Iab)
 
     infiltrasi_kum = np.cumsum(infiltrasi_jam)  
     reff_kum = np.cumsum(reff_jam)
