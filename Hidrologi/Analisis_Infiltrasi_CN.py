@@ -64,72 +64,70 @@ def calculate_limpasan(P, ARF, CN, Im):
     infiltrasi_kum = np.cumsum(infiltrasi_jam)  
     reff_kum = np.cumsum(reff_jam)
     
-    # Menyimpan hasil perhitungan dalam DataFrame
-    refftab = {
-        'Jam ke-': absis,
-        'Hujan Rencana ': Pjam,
-        'Hujan Rencana (ARF)': Pjam_ARF,
-        'Infiltrasi': infiltrasi_jam,
-        'Hujan Efektif': reff_jam,
-        #'Nilai CN': CN,
-        #'Nilai Impervious (%)': Im,
-    }
-    dfreff = pd.DataFrame(refftab)
-
     reffkumtab = {
         'Jam ke-': absis,
         'Hujan Rencana ': Pjam_cum,
         'Hujan Rencana (ARF)': Pkum,
         'Infiltrasi': infiltrasi_kum,
         'Hujan Efektif': reff_kum,
+    #    'Iab': Iab,
         #'Nilai CN': CN,s
         #'Nilai Impervious (%)': Im,
     }
     dfreffkum = pd.DataFrame(reffkumtab)  
+
+        # Menyimpan hasil perhitungan dalam DataFrame
+    refftab = {
+        'Jam ke-': absis,
+        'Hujan Rencana ': Pjam,
+        'Hujan Rencana (ARF)': Pjam_ARF,
+        'Infiltrasi': infiltrasi_jam,
+        'Hujan Efektif': reff_jam,
+    #    'Iab': Iab_jam,
+        #'Nilai CN': CN,
+        #'Nilai Impervious (%)': Im,
+    }
+    dfreff = pd.DataFrame(refftab)
     
-    # Creating Bokeh figure
-    fig = figure(width=600, height=400, title="Grafik Hujan Jam-Jaman Kumulatif dengan P = {} mm/hari".format(np.round(np.sum(P) / ARF,3)))
+    # First plot
+    fig = figure(width=600, height=400, title="Grafik Hujan Jam-Jaman Kumulatif dengan P = {} mm/hari".format(np.round(np.sum(P) / ARF, 3)))
 
     # Plotting bars on the first plot
-    bar1 = fig.vbar(x=absis, top=Pkum, width=0.4, color="powderblue", legend_label="Hujan Rencana (ARF) [mm]")
-    bar2 = fig.vbar(x=absis, top=reff_kum, width=0.4, color="orange", legend_label="Hujan efektif [mm]")
-    bar3 = fig.vbar(x=absis, top=infiltrasi_kum, width=0.4, color="greenyellow", legend_label="Infiltrasi [mm]")
+    fig.vbar(x=absis, top=Pkum, width=0.2, color="powderblue", legend_label="Hujan Rencana (ARF) [mm]")
+    fig.vbar(x=absis - 0.25, top=reff_kum, width=0.2, color="orange", legend_label="Hujan efektif [mm]")  # Slightly shift bars to the right
+    fig.vbar(x=absis + 0.25, top=infiltrasi_kum, width=0.2, color="greenyellow", legend_label="Infiltrasi [mm]")  # Slightly shift bars to the right
 
     # Adding text annotations
     for i in range(len(reff_kum)):
-        fig.text(x=absis[i], y=reff_kum[i], text=[str(round(reff_kum[i], 1))], text_align='center', text_baseline='bottom')
-        fig.text(x=absis[i], y=infiltrasi_kum[i], text=[str(round(infiltrasi_kum[i], 1))], text_align='center', text_baseline='bottom')
+        fig.text(x=absis[i], y=Pkum[i], text=[str(round(Pkum[i], 1))], text_align='center', text_baseline='bottom')
+        fig.text(x=absis[i] - 0.25, y=reff_kum[i], text=[str(round(reff_kum[i], 1))], text_align='center', text_baseline='bottom')
+        fig.text(x=absis[i] + 0.25, y=infiltrasi_kum[i], text=[str(round(infiltrasi_kum[i], 1))], text_align='center', text_baseline='bottom')
 
     # Set axis labels and title
-    fig.xaxis.axis_label = 'Absis'
-    fig.yaxis.axis_label = 'Nilai'
-    fig.title.text = 'Grafik Hujan Jam-Jaman Kumulatif dengan P = {} mm/hari'.format(np.round(np.sum(P) / ARF,3))
+    fig.xaxis.axis_label = 'Jam Ke-'
+    fig.yaxis.axis_label = 'mm'
 
-
-
-    # Plotting bars on the second plot
-    fig2 = figure(width=600, height=400, title="Grafik Hujan Jam-Jaman dengan P = {} mm/hari".format(np.round(np.sum(P) / ARF,3)))
-    bar4 = fig2.vbar(x=absis, top=P, width=0.4, color="powderblue", legend_label="Hujan Rencana (ARF) [mm]")
-    bar5 = fig2.vbar(x=absis, top=reff, width=0.4, color="orange", legend_label="Hujan efektif [mm]")
-    bar6 = fig2.vbar(x=absis, top=infiltrasi_jam, width=0.4, color="greenyellow", legend_label="Infiltrasi [mm]")
+    # Second plot
+    fig2 = figure(width=600, height=400, title="Grafik Hujan Jam-Jaman dengan P = {} mm/hari".format(np.round(np.sum(P) / ARF, 3)))
+    fig2.vbar(x=absis, top=P, width=0.2, color="powderblue", legend_label="Hujan Rencana (ARF) [mm]")
+    fig2.vbar(x=absis - 0.25, top=reff, width=0.2, color="orange", legend_label="Hujan efektif [mm]")  # Slightly shift bars to the right
+    fig2.vbar(x=absis + 0.25, top=infiltrasi_jam, width=0.2, color="greenyellow", legend_label="Infiltrasi [mm]")  # Slightly shift bars to the right
 
     # Adding text annotations
-    for i in range(len(reff)):
-        fig2.text(x=absis[i], y=reff[i], text=[str(round(reff[i], 1))], text_align='center', text_baseline='bottom')
-        fig2.text(x=absis[i], y=infiltrasi_jam[i], text=[str(round(infiltrasi_jam[i], 1))], text_align='center', text_baseline='bottom')
+    for i in range(len(reff_kum)):
+        fig2.text(x=absis[i], y=P[i], text=[str(round(Pkum[i], 1))], text_align='center', text_baseline='bottom')
+        fig2.text(x=absis[i] - 0.25, y=reff[i], text=[str(round(reff[i], 1))], text_align='center', text_baseline='bottom')
+        fig2.text(x=absis[i] + 0.25, y=infiltrasi_jam[i], text=[str(round(infiltrasi_jam[i], 1))], text_align='center', text_baseline='bottom')
 
     # Set axis labels and title
-    fig2.xaxis.axis_label = 'Absis'
-    fig2.yaxis.axis_label = 'Nilai'
-    fig2.title.text = 'Grafik Hujan Jam-Jaman dengan P = {} mm/hari'.format(np.round(np.sum(P) / ARF,3))
+    fig2.xaxis.axis_label = 'Jam ke-'
+    fig2.yaxis.axis_label = 'mm'
 
     # Adding legends
     fig.legend.location = "top_left"
     fig.legend.click_policy = "hide"
     fig2.legend.location = "top_left"
-    fig2.legend.click_policy = "hide"
-
-    
+    fig2.legend.click_policy = "hide" 
   
     # Tampilkan tabel dan graph reffkumtab
     st.subheader("Tabel Hujan Efektif Kumulatif")
