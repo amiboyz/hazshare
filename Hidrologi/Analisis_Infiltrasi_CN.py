@@ -99,13 +99,13 @@ def calculate_limpasan(P, ARF, CN, Im):
 
     # Adding text annotations
     for i in range(len(reff_kum)):
-        fig.text(x=absis[i] - 0.25, y=Pkum[i], text=[str(round(Pkum[i], 1))], text_align='center', text_baseline='bottom')
-        fig.text(x=absis[i] + 0.25, y=reff_kum[i], text=[str(round(reff_kum[i], 1))], text_align='center', text_baseline='bottom')
-        fig.text(x=absis[i], y=infiltrasi_kum[i], text=[str(round(infiltrasi_kum[i], 1))], text_align='center', text_baseline='bottom')
+        fig.text(x=absis[i] - 0.25, y=Pkum[i], text=[str(round(Pkum[i], 1))], text_align='center', text_baseline='bottom',text_font_size="8pt")
+        fig.text(x=absis[i] + 0.25, y=reff_kum[i], text=[str(round(reff_kum[i], 1))], text_align='center', text_baseline='bottom',text_font_size="8pt")
+        fig.text(x=absis[i], y=infiltrasi_kum[i], text=[str(round(infiltrasi_kum[i], 1))], text_align='center', text_baseline='bottom',text_font_size="8pt")
 
     # Set axis labels and title
     fig.xaxis.axis_label = 'Jam Ke-'
-    fig.yaxis.axis_label = 'mm'
+    fig.yaxis.axis_label = 'Curah Hujan (mm)'
 
     # Second plot
     fig2 = figure(width=600, height=400, title="Grafik Hujan Jam-Jaman dengan P = {} mm/hari".format(np.round(np.sum(P) / ARF, 3)))
@@ -115,13 +115,13 @@ def calculate_limpasan(P, ARF, CN, Im):
 
     # Adding text annotations
     for i in range(len(reff_kum)):
-        fig2.text(x=absis[i] - 0.25, y=P[i], text=[str(round(Pkum[i], 1))], text_align='center', text_baseline='bottom')
-        fig2.text(x=absis[i] + 0.25, y=reff[i], text=[str(round(reff[i], 1))], text_align='center', text_baseline='bottom')
-        fig2.text(x=absis[i], y=infiltrasi_jam[i], text=[str(round(infiltrasi_jam[i], 1))], text_align='center', text_baseline='bottom')
+        fig2.text(x=absis[i] - 0.25, y=P[i], text=[str(round(Pkum[i], 1))], text_align='center', text_baseline='bottom',text_font_size="8pt")
+        fig2.text(x=absis[i] + 0.25, y=reff[i], text=[str(round(reff[i], 1))], text_align='center', text_baseline='bottom',text_font_size="8pt")
+        fig2.text(x=absis[i], y=infiltrasi_jam[i], text=[str(round(infiltrasi_jam[i], 1))], text_align='center', text_baseline='bottom',text_font_size="8pt")
 
     # Set axis labels and title
     fig2.xaxis.axis_label = 'Jam ke-'
-    fig2.yaxis.axis_label = 'mm'
+    fig2.yaxis.axis_label = 'Curah Hujan (mm)'
 
     # Adding legends
     fig.legend.location = "top_left"
