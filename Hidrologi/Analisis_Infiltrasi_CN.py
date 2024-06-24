@@ -94,14 +94,14 @@ def calculate_limpasan(P, ARF, CN, Im):
 
     # Plotting bars on the first plot
     fig.vbar(x=absis, top=Pkum, width=0.2, color="powderblue", legend_label="Hujan Rencana (ARF) [mm]")
-    fig.vbar(x=absis - 0.25, top=reff_kum, width=0.2, color="orange", legend_label="Hujan efektif [mm]")  # Slightly shift bars to the right
-    fig.vbar(x=absis + 0.25, top=infiltrasi_kum, width=0.2, color="greenyellow", legend_label="Infiltrasi [mm]")  # Slightly shift bars to the right
+    fig.vbar(x=absis + 0.25, top=reff_kum, width=0.2, color="orange", legend_label="Hujan efektif [mm]")  # Slightly shift bars to the right
+    fig.vbar(x=absis - 0.25, top=infiltrasi_kum, width=0.2, color="greenyellow", legend_label="Infiltrasi [mm]")  # Slightly shift bars to the right
 
     # Adding text annotations
     for i in range(len(reff_kum)):
         fig.text(x=absis[i], y=Pkum[i], text=[str(round(Pkum[i], 1))], text_align='center', text_baseline='bottom')
-        fig.text(x=absis[i] - 0.25, y=reff_kum[i], text=[str(round(reff_kum[i], 1))], text_align='center', text_baseline='bottom')
-        fig.text(x=absis[i] + 0.25, y=infiltrasi_kum[i], text=[str(round(infiltrasi_kum[i], 1))], text_align='center', text_baseline='bottom')
+        fig.text(x=absis[i] + 0.25, y=reff_kum[i], text=[str(round(reff_kum[i], 1))], text_align='center', text_baseline='bottom')
+        fig.text(x=absis[i] - 0.25, y=infiltrasi_kum[i], text=[str(round(infiltrasi_kum[i], 1))], text_align='center', text_baseline='bottom')
 
     # Set axis labels and title
     fig.xaxis.axis_label = 'Jam Ke-'
@@ -110,14 +110,14 @@ def calculate_limpasan(P, ARF, CN, Im):
     # Second plot
     fig2 = figure(width=600, height=400, title="Grafik Hujan Jam-Jaman dengan P = {} mm/hari".format(np.round(np.sum(P) / ARF, 3)))
     fig2.vbar(x=absis, top=P, width=0.2, color="powderblue", legend_label="Hujan Rencana (ARF) [mm]")
-    fig2.vbar(x=absis - 0.25, top=reff, width=0.2, color="orange", legend_label="Hujan efektif [mm]")  # Slightly shift bars to the right
-    fig2.vbar(x=absis + 0.25, top=infiltrasi_jam, width=0.2, color="greenyellow", legend_label="Infiltrasi [mm]")  # Slightly shift bars to the right
+    fig2.vbar(x=absis + 0.25, top=reff, width=0.2, color="orange", legend_label="Hujan efektif [mm]")  # Slightly shift bars to the right
+    fig2.vbar(x=absis - 0.25, top=infiltrasi_jam, width=0.2, color="greenyellow", legend_label="Infiltrasi [mm]")  # Slightly shift bars to the right
 
     # Adding text annotations
     for i in range(len(reff_kum)):
         fig2.text(x=absis[i], y=P[i], text=[str(round(Pkum[i], 1))], text_align='center', text_baseline='bottom')
-        fig2.text(x=absis[i] - 0.25, y=reff[i], text=[str(round(reff[i], 1))], text_align='center', text_baseline='bottom')
-        fig2.text(x=absis[i] + 0.25, y=infiltrasi_jam[i], text=[str(round(infiltrasi_jam[i], 1))], text_align='center', text_baseline='bottom')
+        fig2.text(x=absis[i] + 0.25, y=reff[i], text=[str(round(reff[i], 1))], text_align='center', text_baseline='bottom')
+        fig2.text(x=absis[i] - 0.25, y=infiltrasi_jam[i], text=[str(round(infiltrasi_jam[i], 1))], text_align='center', text_baseline='bottom')
 
     # Set axis labels and title
     fig2.xaxis.axis_label = 'Jam ke-'
