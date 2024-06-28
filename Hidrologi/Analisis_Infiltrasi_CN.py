@@ -61,12 +61,12 @@ def calculate_limpasan(P, ARF, CN, Im):
     Iab_jam[1:] = np.diff(Iab)
     #Hujan Efektif Jam-jaman 
     
-    reff_jam = reff
     infiltrasi_jam = (Iab_jam+infil)
+    reff_jam = Pjam_ARF - infiltrasi_jam
     infiltrasi_jam = infiltrasi_jam-(infiltrasi_jam*Im/100)
     infiltrasi_kum = np.cumsum(infiltrasi_jam)  
     reff_kum = np.cumsum(reff_jam)
-    
+
     reffkumtab = {
         'Jam ke-': absis,
         'Hujan Rencana ': Pjam_cum,
