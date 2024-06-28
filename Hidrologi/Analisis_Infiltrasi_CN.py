@@ -65,6 +65,7 @@ def calculate_limpasan(P, ARF, CN, Im):
     infiltrasi_jam = (Iab_jam+infil)
     infiltrasi_jam = infiltrasi_jam-(infiltrasi_jam*Im/100)
     infiltrasi_kum = np.cumsum(infiltrasi_jam)  
+    reff_kum = np.cumsum(reff_jam)
     
     reffkumtab = {
         'Jam ke-': absis,
