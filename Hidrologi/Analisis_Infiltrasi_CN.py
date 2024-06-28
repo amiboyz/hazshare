@@ -95,10 +95,10 @@ def calculate_limpasan(P, ARF, CN, Im):
     dfreff = pd.DataFrame(refftab)
     
     # First plot
-    fig = figure(width=600, height=400, title="Grafik Hujan Jam-Jaman Kumulatif dengan P = {} mm/hari".format(np.round(np.sum(P) / ARF, 3)))
+    fig = figure(width=600, height=400, title="Grafik Hujan Jam-Jaman Kumulatif dengan P = {} mm/hari (Metode SCS-CN)".format(np.round(np.sum(P) / ARF, 3)))
 
     # Plotting bars on the first plot
-    fig.vbar(x=absis - 0.25, top=Pkum, width=0.2, color="powderblue", legend_label="Hujan Rencana (ARF) [mm]")
+    #fig.vbar(x=absis - 0.25, top=Pkum, width=0.2, color="powderblue", legend_label="Hujan Rencana (ARF) [mm]")
     fig.vbar(x=absis + 0.25, top=reff_kum, width=0.2, color="orange", legend_label="Hujan efektif [mm]")  # Slightly shift bars to the right
     fig.vbar(x=absis, top=infiltrasi_kum, width=0.2, color="greenyellow", legend_label="Infiltrasi [mm]")  # Slightly shift bars to the right
 
@@ -113,8 +113,8 @@ def calculate_limpasan(P, ARF, CN, Im):
     fig.yaxis.axis_label = 'Curah Hujan (mm)'
 
     # Second plot
-    fig2 = figure(width=600, height=400, title="Grafik Hujan Jam-Jaman dengan P = {} mm/hari".format(np.round(np.sum(P) / ARF, 3)))
-    fig2.vbar(x=absis - 0.25, top=P, width=0.2, color="powderblue", legend_label="Hujan Rencana (ARF) [mm]")
+    fig2 = figure(width=600, height=400, title="Grafik Hujan Jam-Jaman dengan P = {} mm/hari (Metode SCS-CN)".format(np.round(np.sum(P) / ARF, 3)))
+    #fig2.vbar(x=absis - 0.25, top=Pjam_ARF, width=0.2, color="powderblue", legend_label="Hujan Rencana (ARF) [mm]")
     fig2.vbar(x=absis + 0.25, top=reff, width=0.2, color="orange", legend_label="Hujan efektif [mm]")  # Slightly shift bars to the right
     fig2.vbar(x=absis, top=infiltrasi_jam, width=0.2, color="greenyellow", legend_label="Infiltrasi [mm]")  # Slightly shift bars to the right
 
@@ -132,14 +132,14 @@ def calculate_limpasan(P, ARF, CN, Im):
     fig.legend.location = "top_left"
     fig.legend.click_policy = "hide"
     fig2.legend.location = "top_left"
-    fig2.legend.click_policy = "hide" 
+    fig2.legend.click_policy = "hide"   
   
     # Tampilkan tabel dan graph reffkumtab
-    st.subheader("Tabel Hujan Efektif Kumulatif")
+    st.subheader("Tabel Hujan Efektif Kumulatif (Metode SCS-CN)")
     st.write(dfreffkum)
     st.bokeh_chart(fig)
     # Tampilkan tabel dan graph reff
-    st.subheader("Tabel Hujan Efektif Jam-jaman")
+    st.subheader("Tabel Hujan Efektif Jam-jaman (Metode SCS-CN)")
     st.write(dfreff)
     st.bokeh_chart(fig2)
 
