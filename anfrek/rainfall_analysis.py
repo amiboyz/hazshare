@@ -11,6 +11,12 @@ from scipy.stats import norm, lognorm, pearson3, gumbel_r, kstest, genextreme
 # Initialize Bokeh output in notebook
 #output_notebook()
 
+# Tambahkan judul atau teks di sidebar
+st.sidebar.title("Links Kalkulasi Lainnya")
+
+# Tambahkan link ke beberapa website lain
+st.sidebar.write("[🌦 Analisis Hujan Efektif dan Hidrograf Satuan Sintetik](https://hazhydrocalc.streamlit.app/)")
+
 # Title
 st.title("Analisa Frekuensi Calculator")
 st.caption('created by :blue[HAZ] :sunglasses: miftahhazmi@gmail.com')
